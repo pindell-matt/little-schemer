@@ -1,4 +1,4 @@
-#lang racket
+#lang scheme
 (require rackunit) ; for checks / assertions
 
 ;; atom?
