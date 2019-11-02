@@ -34,18 +34,16 @@
 (check-true (list? '(() () () ()))) ; since empty lists are valid s-expressions, they can populate a list
 (check-false (atom? '()))           ; but empty lists are not atoms
 
-;; The Law of Car - car [contents of address register]
-;; the primitive car returns first element of a list, only for non-empty lists
-(check-equal? (car '(a b c)) 'a)
-(check-equal? (car '((a b c) x y z)) '(a b c))
+(check-equal? (car '(a b c)) 'a)                ; the atom 'a is the first element
+(check-equal? (car '((a b c) x y z)) '(a b c))  ; the list '(a b c) is the first element
 (check-exn exn:fail? (lambda () (car 'string))) ; contract violation for 'string
 (check-exn exn:fail? (lambda () (car '())))     ; contract violation for empty list
 
-(check-equal? ; the first element is the list containing a list that contains 'hotdog
+(check-equal? ; the first element is a nested list containing 'hotdog
   (car '(((hotdogs)) (and) (pickle) relish))
   '((hotdogs)))
 
-(check-equal? ; the additional car means we get a list containing only 'hotdog
+(check-equal? ; the additional car means we get a single list containing only 'hotdog
   (car (car '(((hotdogs)) (and))))
   '(hotdogs))
 
@@ -53,7 +51,7 @@
 ;; the primitive car returns first element of a list, only for non-empty lists
 
 (check-equal? (cdr '(a b c)) '(b c))   ; the 'rest' of the list is 'b and 'c
-(check-equal? (cdr '(hamburger)) '())  ; the 'rest' of the list is empty - hence an empty list
+(check-equal? (cdr '(hamburger)) '())  ; the 'rest' of the list is empty - therefore it returns an empty list
 (check-equal? (cdr '((x) t r)) '(t r)) ; it doesn't matter that the first element can be a list itself
 
 (check-exn exn:fail?
@@ -62,7 +60,7 @@
 (check-exn exn:fail?
   (lambda () (cdr '()))) ; contract violation for empty list
 
-(check-equal?
+(check-equal? ; combining car and cdr calls allow you to access deeper elements
   (car (cdr '((b) (x y) ((c)))))
   '(x y))
 
@@ -71,7 +69,7 @@
   '(((c))))
 
 (check-exn exn:fail?
-  (lambda () (cdr (car '(a (b (c)) d))))) ; contract violation 'a is an atom
+  (lambda () (cdr (car '(a (b (c)) d))))) ; contract violation 'a is an atom, cdr cannot be called on atoms
 
 ;; The Law of Cdr - cdr [contents of decrement register - all after first element (car)]
 ;; the primitive cdr returns everything after the car of a list
