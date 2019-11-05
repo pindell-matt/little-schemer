@@ -1,5 +1,4 @@
 #lang scheme
-
 (require rackunit) ; for checks / assertions
 
 ;; atom? - validates an atom
@@ -37,7 +36,7 @@
 
 (check-true (lat? '(bacon and eggs)))
 
-;; the conditions in lat?
+;; the conditions in lat?:
 ;; (null? l) checks whether the list is null/empty - per the First Commandment (else is asked at the end)
 ;; (atom? (car l)) checks if the next first-position s-expression is an atom
 ;;   if so, lat? recursively calls itself again - on the remaining elements in the list: (cdr l)
@@ -78,3 +77,32 @@
 (check-false (member? 'poached '(fried eggs and scrambled eggs)))
 (check-true (member? 'meat '(mashed potatoes and meat gravy)))
 
+;; the conditions in member?:
+;; (null? lat #f) - checks whether the list is null/empty (per the First Commandment)
+;;   returns #f if it is - as it means all elements have been checked and none have matched the provided atom 'a'
+;; (else 
+;;   (or
+;;     (eq? (car lat) a) - checks if next s-expression in list matches the provided atom 'a', stops and returns #t if true
+;;     (member? a (cdr lat)))) - if first statement in 'or' returns #f, it will recursively call itself with the remainder of the list
+
+(check-false (member? 'liver '(bagels and lox)))
+
+;; (null? '(bagels and lox) #f) - #f, continue
+;; (else - #t, else is always #t
+;;   (or
+;;     (eq? 'bagels 'liver) - #f, continue
+;;     (member? 'liver '(and lox))))
+;;
+;;   (null? '(and lox) #f) - #f, continue
+;;   (else - #t, else is always #t
+;;     (or
+;;       (eq? 'and 'liver) - #f, continue
+;;       (member? 'liver '(lox))))
+;;
+;;     (null? '(lox) #f) - #f, continue
+;;     (else - #t
+;;       (or
+;;         (eq? 'lox 'liver) - #f, continue
+;;         (member? 'liver '())))
+;;
+;;        (null? '() #f) - #t, '() is null, so #f is returned 
