@@ -203,6 +203,7 @@
   '(ice cream with fudge for dessert))
  '(ice cream with fudge topping for dessert))
 
+;; insertL - same as insertR, but it puts the 'new' atom to the left of the 'old' (i.e. before the 'old')
 (define insertL
   (lambda (new old lat)
     (cond
@@ -219,3 +220,22 @@
   'is
   '(so is my insert left))
  '(so this is my insert left))
+
+;; substr - substitutes first occurance of 'old' with 'new'
+(define subst
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      (else (cond
+              ((eq? (car lat) old)
+               (cons new (cdr lat)))
+              (else (cons (car lat)
+                          (subst new old
+                                 (cdr lat)))))))))
+
+(check-equal?
+ (subst
+  'topping
+  'fudge
+  '(ice cream with fudge for dessert))
+ '(ice cream with topping for dessert))
