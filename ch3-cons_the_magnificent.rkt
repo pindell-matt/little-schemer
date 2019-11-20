@@ -147,7 +147,7 @@
  '(a b c d e f g d h))
 
 ;; insertR - book first attempt
-(define insertR
+(define insertR_first
   (lambda (new old lat)
     (cond
       ((null? lat) (quote ()))
@@ -155,6 +155,24 @@
        (cond
          ((eq? (car lat) old) (cdr lat)) ;; but we're not cons-ing 'new' anywhere!
          (else (cons (car lat)           ;; and we're losing 'old' too
-                     (insertR new old
-                              (cdr lat)))))))))
+                     (insertR_first new old
+                                    (cdr lat)))))))))
 
+(check-equal? ;; insertR_first functions like rember
+ (insertR_first
+  'topping
+  'fudge
+  '(ice cream with fudge for dessert))
+ '(ice cream with for dessert))
+
+;; insertR - book second attempt
+(define insertR_second
+  (lambda (new old lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+              ((eq? (car lat) old)
+               (cons new (cdr lat)))
+              (else (cons (car lat)
+                          (insertR_second new old
+                                          (cdr lat)))))))))
