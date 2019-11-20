@@ -110,3 +110,24 @@
 
 ;; The Third Commandment: When building a list, describe the first typical element,
 ;; and then cons it onto the natural recursion.
+
+;; ex: (car (car l))    == typical element
+;;     (firsts (cdr l)) == natural recursion
+
+;; insertR - inserts 'new' atom after 'old' atom in a given lat
+;; my attemt:
+(define my_insertR
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      ((eq? (car lat) old) (cons old (cons new (cdr lat))))
+      (else
+       (cons (car lat)
+             (my_insertR new old (cdr lat)))))))
+
+(check-equal?
+ (my_insertR
+  'topping
+  'fudge
+  '(ice cream with fudge for dessert))
+ '(ice cream with fudge topping for dessert))
