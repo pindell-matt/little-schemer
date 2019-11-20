@@ -172,7 +172,33 @@
       ((null? lat) (quote ()))
       (else (cond
               ((eq? (car lat) old)
-               (cons new (cdr lat)))
+               (cons new (cdr lat))) ;; but we're still losing 'old'!
               (else (cons (car lat)
                           (insertR_second new old
                                           (cdr lat)))))))))
+
+(check-equal? ;; insertR_second swaps 'new' for 'old'
+ (insertR_second
+  'topping
+  'fudge
+  '(ice cream with fudge for dessert))
+ '(ice cream with topping for dessert))
+
+(define insertR
+  (lambda (new old lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+              ((eq? (car lat) old)
+               (cons old
+                     (cons new (cdr lat))))
+              (else (cons (car lat)
+                          (insertR new old
+                                   (cdr lat)))))))))
+
+(check-equal? ;; finally got it!
+ (insertR
+  'topping
+  'fudge
+  '(ice cream with fudge for dessert))
+ '(ice cream with fudge topping for dessert))
