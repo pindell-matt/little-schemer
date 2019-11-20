@@ -202,3 +202,20 @@
   'fudge
   '(ice cream with fudge for dessert))
  '(ice cream with fudge topping for dessert))
+
+(define insertL
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      (else (cond
+              ((eq? (car lat) old)
+               (cons new lat))
+              (else (cons (car lat)
+                          (insertL new old (cdr lat)))))))))
+
+(check-equal?
+ (insertL
+  'this
+  'is
+  '(so is my insert left))
+ '(so this is my insert left))
