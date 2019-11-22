@@ -260,8 +260,29 @@
  '(vanilla ice cream with chocolate topping))
 
 ;; multirember - remove all occurances of 'a' in lat
-(define my_multirember
+(define multirember
   (lambda (a lat)
     (cond
       ((null? lat) '())
-      (else (eq?
+      ((eq? (car lat) a) (multirember a (cdr lat)))
+      (else (cons (car lat)
+                  (multirember a (cdr lat)))))))
+
+(check-equal?
+ (multirember 'cup '(coffee cup tea cup and hick cup))
+ '(coffee tea and hick))
+
+(define multiinsertR
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      ((eq? (car lat) old)
+       (cons (car lat)
+             (multiinsertR new old
+                           (cons new (cdr lat)))))
+      (else
+       (cons (car lat) (multiinsertR new old (cdr lat)))))))
+
+(check-equal?
+ (multiinsertR 'AFTER 'before '(this is before and another before))
+ '(this is before AFTER and another before AFTER))
