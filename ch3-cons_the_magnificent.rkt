@@ -240,7 +240,7 @@
   '(ice cream with fudge for dessert))
  '(ice cream with topping for dessert))
 
-;; subst2 - substitues eitehr the first occurrence of 'o1' _or_ 'o2' with 'new'
+;; subst2 - substitues either the first occurrence of 'o1' _or_ 'o2' with 'new'
 (define subst2
   (lambda (new o1 o2 lat)
     (cond
@@ -258,3 +258,10 @@
  (subst2 'vanilla 'chocolate 'banana
          '(banana ice cream with chocolate topping))
  '(vanilla ice cream with chocolate topping))
+
+;; multirember - remove all occurances of 'a' in lat
+(define my_multirember
+  (lambda (a lat)
+    (cond
+      ((null? lat) '())
+      (else (eq?
