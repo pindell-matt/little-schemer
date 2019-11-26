@@ -26,3 +26,12 @@
        (my_+ (add1 augend) (sub1 addend)))))) ;; else, recur - adding 1 to augend and subbing 1 from addend
 
 (check-equal? (my_+ 2 3) 5)
+
+(define +
+  (lambda (augend addend)
+    (cond
+      ((zero? addend) augend)
+      (else
+       (add1 (+ augend (sub1 addend))))))) ;; can just pass result of '+' to add1
+
+(check-equal? (+ 2 3) 5)
