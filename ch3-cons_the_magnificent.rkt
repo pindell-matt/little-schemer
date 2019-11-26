@@ -286,3 +286,36 @@
 (check-equal?
  (multiinsertR 'AFTER 'before '(this is before and another before))
  '(this is before AFTER and another before AFTER))
+
+(define multiinsertL
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      ((eq? (car lat) old)
+       (cons new
+             (cons old
+                   (multiinsertL new old (cdr lat)))))
+      (else (cons (car lat)
+                  (multiinsertL new old (cdr lat)))))))
+
+(check-equal?
+ (multiinsertL 'fried 'fish '(chips and fish or fish and fried))
+ '(chips and fried fish or fried fish and fried))
+
+;; The Fourth Commandment:
+;; Always change at least one argument while recurring
+;; It must be changed closer to termination.
+;; The changing argument must be tested in the termination condition:
+;; when using cdr, test termination with null?
+
+(define multisubst
+  (lambda (new old lat)
+    (cond
+      ((null? lat) '())
+      ((eq? (car lat) old) (cons new (multisubst new old (cdr lat))))
+      (else
+       (cons (car lat) (multisubst new old (cdr lat)))))))
+
+(check-equal?
+ (multisubst 'cup 'mug '(coffee mug tea mug and hick cup))
+ '(coffee cup tea cup and hick cup))
