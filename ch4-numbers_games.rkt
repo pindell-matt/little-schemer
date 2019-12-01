@@ -40,9 +40,20 @@
 ;; add1 and cons both "add one" to an existing construct
 
 (define my_-
-  (lambda (a b)
+  (lambda (minuend subtrahend)
     (cond
-      ((zero? b) a)
+      ((zero? subtrahend) minuend)
       (else
-       (sub1 (my_- a (sub1 b)))))))
+       (sub1 (my_- minuend (sub1 subtrahend)))))))
 
+(check-equal? (my_- 14 3) 11)
+(check-equal? (my_- 17 9) 8)
+
+(define -
+  (lambda (n m)
+    (cond
+      ((zero? m) n)
+      (else (sub1 (- n (sub1 m)))))))
+
+(check-equal? (- 14 3) 11)
+(check-equal? (- 17 9) 8)
