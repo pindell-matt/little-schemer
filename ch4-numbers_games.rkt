@@ -35,3 +35,14 @@
        (add1 (+ augend (sub1 addend))))))) ;; can just pass result of '+' to add1
 
 (check-equal? (+ 2 3) 5)
+(check-equal? (+ 46 12) 58)
+
+;; add1 and cons both "add one" to an existing construct
+
+(define my_-
+  (lambda (a b)
+    (cond
+      ((zero? b) a)
+      (else
+       (sub1 (my_- a (sub1 b)))))))
+
