@@ -130,3 +130,16 @@
 ;; When building a value with cons
 ;;  always consider '() for the value of the terminiating line
 
+(define my_tup+
+  (lambda (tup1 tup2)
+   (cond
+     ((or (null? tup1)
+          (null? tup2)) '())
+     (else
+      (cons (+ (car tup1) (car tup2)) (my_tup+ (cdr tup1) (cdr tup2)))))))
+
+(check-equal?
+ (my_tup+
+  '(3 6 9 11 4)
+  '(8 5 2 0  7))
+ '(11 11 11 11 11))
