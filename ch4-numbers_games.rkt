@@ -96,3 +96,37 @@
 
 (check-equal? (x 5 3) 15)
 (check-equal? (x 13 4) 52)
+
+;; Some comments to help aid in visualization:
+
+;; (x 2 3)
+;; (zero? 3) - #f
+;; (+ 2 (x 2 (sub1 3))))
+;;  (x 2 2)
+;;  (zero? 2) - #f
+;;  (+ 2 (x 2 (sub1 2)))
+;;   (x 2 1)
+;;   (zero? 1) - #f
+;;   (+ 2 (x 2 (sub1 1)))
+;;    (zero? 0) - #t
+
+;; (+ 2 (+ 2 (+ 2 0)))
+;; (+ 2 (+ 2 (2)))
+;; (+ 2 (+ 2  2))
+;; (+ 2 (4))
+;; (+ 2 4)
+;; 6
+
+;; (x 2 3) = 2 + (x 2 2)
+;;         = 2 + 2 + (x 2 1)
+;;         = 2 + 2 + 2 + (x 2 0)
+;;         = 2 + 2 + 2 + 0
+
+;; The Fifth Commandement
+;; When building a value with +
+;;  always use 0 for the value of the terminating line - adding 0 does not change the value
+;; When building a value with x
+;;  always use 1 for the value of the terminating line - multiplying by 1 does not change the value
+;; When building a value with cons
+;;  always consider '() for the value of the terminiating line
+
