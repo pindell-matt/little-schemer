@@ -66,9 +66,16 @@
 
 ;; The First Commandment (first revision)
 ;; When recurring on a list of atoms, lat, ask two questions:
-;; (null? lat) & else ...
+;;  (null? lat) & (else ...)
 ;; When recurring on a number, n, ask two questions:
-;; (zero? n) & else ...
+;;  (zero? n) & (else ...)
+
+;; The Fourth Commandment (first revision)
+;; Always change at least one argument while recurring.
+;; It must be changed to be _closer_ to termination.
+;; The changing argument must be tested in the termination condition:
+;;  when using cdr  - test with (null? ...)
+;;  when using sub1 - test with (zero? ...)
 
 (define my_x
   (lambda (multiplicand multiplier)
@@ -78,4 +85,14 @@
 
 (check-equal? (my_x 5 3) 15)
 (check-equal? (my_x 13 4) 52)
+(check-equal? (my_x 4 0) 0)
+(check-equal? (my_x 0 5) 0)
 
+(define x
+  (lambda (n m)
+    (cond
+      ((zero? m) 0)
+      (else (+ n (x n (sub1 m)))))))
+
+(check-equal? (x 5 3) 15)
+(check-equal? (x 13 4) 52)
