@@ -69,3 +69,13 @@
 ;; (null? lat) & else ...
 ;; When recurring on a number, n, ask two questions:
 ;; (zero? n) & else ...
+
+(define my_x
+  (lambda (multiplicand multiplier)
+    (cond
+      ((zero? multiplier) 0)
+      (else (+ multiplicand (my_x multiplicand (sub1 multiplier)))))))
+
+(check-equal? (my_x 5 3) 15)
+(check-equal? (my_x 13 4) 52)
+
