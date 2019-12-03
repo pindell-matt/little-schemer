@@ -62,4 +62,10 @@
   (lambda (tup)
     (cond
       ((null? tup) 0)
-      (else (add1 (addtuple (cdr tup)))))))
+      (else (+ (car tup) (addtuple (cdr tup)))))))
+
+;; The First Commandment (first revision)
+;; When recurring on a list of atoms, lat, ask two questions:
+;; (null? lat) & else ...
+;; When recurring on a number, n, ask two questions:
+;; (zero? n) & else ...
