@@ -57,3 +57,9 @@
 
 (check-equal? (- 14 3) 11)
 (check-equal? (- 17 9) 8)
+
+(define addtuple
+  (lambda (tup)
+    (cond
+      ((null? tup) 0)
+      (else (add1 (addtuple (cdr tup)))))))
