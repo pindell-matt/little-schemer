@@ -134,12 +134,39 @@
   (lambda (tup1 tup2)
    (cond
      ((or (null? tup1)
-          (null? tup2)) '())
+          (null? tup2)) '()) ;; my implementation runs on uneven tuple pairings
      (else
-      (cons (+ (car tup1) (car tup2)) (my_tup+ (cdr tup1) (cdr tup2)))))))
+      (cons (+ (car tup1) (car tup2))
+            (my_tup+ (cdr tup1) (cdr tup2)))))))
 
 (check-equal?
  (my_tup+
   '(3 6 9 11 4)
   '(8 5 2 0  7))
  '(11 11 11 11 11))
+
+(check-equal?
+ (my_tup+ '(2 3) '(4 6))
+ '(6 9))
+
+(check-equal?
+ (my_tup+
+  '(1 2 3 4 5 6 7 8 9)
+  '(4 3 2 1))
+  '(5 5 5 5)) ;; my implementations adds up until the smaller of the two tuples
+              ;; ignoring the rest
+
+(define tup+
+  (lambda (tup1 tup2)
+    (cond
+      ((and (null? tup1) (null? tup2))
+       (quote ()))
+      (else
+       (cons (+ (car tup1) (car tup2))
+             (tup+
+              (cdr tup1) (cdr tup2)))))))
+
+;; try to write a variation of tup+ that accepts any two tups
+;; glomming the rest of the longest tup onto the final output
+;; as though you were adding '0'
+    
