@@ -166,7 +166,30 @@
              (tup+
               (cdr tup1) (cdr tup2)))))))
 
-;; try to write a variation of tup+ that accepts any two tups
+;; greedy_tup+ is a variation of tup+ that accepts any two tups
 ;; glomming the rest of the longest tup onto the final output
 ;; as though you were adding '0'
-    
+
+(define greedy_tup+
+  (lambda (tup1 tup2)
+    (cond
+      ((null? tup1) tup2)
+      ((null? tup2) tup1)
+      (else
+       (cons (+ (car tup1) (car tup2))
+             (greedy_tup+
+              (cdr tup1) (cdr tup2)))))))
+
+(check-equal?
+ (greedy_tup+
+  '(1 2 3 4 5 6 7 8 9)
+  '(4 3 2 1))
+  '(5 5 5 5 5 6 7 8 9))
+
+(define my_>
+  (lambda (n m)
+    (cond
+      ((zero? n) #f) ;; if n hits zero first - it was smaller
+      ((zero? m) #t) ;; if m hits zero first - n  was larger!
+      (else
+       (my_> (sub1 n) (sub1 m))))))
