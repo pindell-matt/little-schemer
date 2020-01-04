@@ -318,3 +318,21 @@
 (check-equal?
  (all-nums '(5 pears 6 prunes 9 dates))
  '(5 6 9))
+
+
+(define equan?
+  (lambda (a1 a2)
+    (cond
+      ((and (number? a1)
+            (number? a2))
+       (= a1 a2))
+      ((and (atom? a1)
+            (atom? a2))
+       (eq? a1 a2))
+      (else (#f)))))
+
+(check-true  (equan? 2 2))
+(check-false (equan? 2 3))
+(check-true  (equan? 'a 'a))
+(check-false (equan? 'a 'b))
+(check-false (equan? 1 'b))
