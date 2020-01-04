@@ -236,3 +236,26 @@
 
 (check-equal? (my_length '(hotdogs with mustard sauerktraut and pickles)) 6)
 (check-equal? (my_length '(ham and cheese on rye)) 5)
+
+(define book_length
+  (lambda (lat)
+    (cond
+      ((null? lat) 0)
+      (else (add1 (book_length (cdr lat)))))))
+
+
+(define pick
+  (lambda (index lat)
+    (cond
+      ((null? lat) '())
+      ((eq? index 1) (car lat))
+      (else
+       (pick (sub1 index) (cdr lat))))))
+
+(check-equal?
+ (pick 4 '(lasagna spaghetti ravioli macaroni meatball))
+ 'macaroni)
+
+(check-equal?
+ (pick 0 '())
+ '())
