@@ -193,3 +193,27 @@
       ((zero? m) #t) ;; if m hits zero first - n  was larger!
       (else
        (my_> (sub1 n) (sub1 m))))))
+
+(check-true (my_> 5 4))
+(check-false (my_> 1 4))
+
+(define my_<
+  (lambda (n m)
+    (cond
+      ((zero? m) #f)
+      ((zero? n) #t)
+      (else
+       (my_< (sub1 n) (sub1 m))))))
+
+(check-false (my_< 5 4))
+(check-true (my_< 1 4))
+
+;; define = using my_> and my_<
+
+(define =
+  (lambda (n m)
+    (and
+     (not (my_> n m))
+     (not (my_< n m)))))
+
+
