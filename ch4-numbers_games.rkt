@@ -259,3 +259,19 @@
 (check-equal?
  (pick 0 '())
  '())
+
+(define book_pick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (car lat))
+      (else (book_pick (sub1 n) (cdr lat))))))
+
+(define rempick
+  (lambda (index lat)
+    (cond
+      ((zero? (sub1 index)) (cdr lat))
+      (else (cons (car lat) (rempick (sub1 index) (cdr lat)))))))
+
+(check-equal?
+ (rempick 3 '(hotdogs with hot mustard))
+ '(hotdogs with mustard))
