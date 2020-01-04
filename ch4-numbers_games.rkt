@@ -209,13 +209,13 @@
 (check-true (my_< 1 4))
 
 ;; define = using my_> and my_<
-
 (define =
   (lambda (n m)
     (and
      (not (my_> n m))
      (not (my_< n m)))))
 
+;; exponents
 (define ^
   (lambda (base exponent)
     (cond
@@ -228,6 +228,7 @@
 (check-equal? (^ 2 3) 8)
 (check-equal? (^ 5 3) 125)
 
+;; return length of a given list
 (define my_length
   (lambda (lat)
     (cond
@@ -243,7 +244,7 @@
       ((null? lat) 0)
       (else (add1 (book_length (cdr lat)))))))
 
-
+;; pull out atom at provided index
 (define pick
   (lambda (index lat)
     (cond
@@ -266,6 +267,7 @@
       ((zero? (sub1 n)) (car lat))
       (else (book_pick (sub1 n) (cdr lat))))))
 
+;; remove atom at index
 (define rempick
   (lambda (index lat)
     (cond
@@ -276,7 +278,7 @@
  (rempick 3 '(hotdogs with hot mustard))
  '(hotdogs with mustard))
 
-
+;; filters a list of atoms to remove all numbers
 (define no-nums
   (lambda (lat)
     (cond
@@ -304,7 +306,7 @@
  (book-no-nums '(5 pears 6 prunes 9 dates))
  '(pears prunes dates))
 
-
+;; filters a list of atoms down to keep only numbers
 (define all-nums
   (lambda (lat)
     (cond
@@ -319,7 +321,7 @@
  (all-nums '(5 pears 6 prunes 9 dates))
  '(5 6 9))
 
-
+;; checks equivalence for both numbers and atoms
 (define equan?
   (lambda (a1 a2)
     (cond
@@ -346,7 +348,7 @@
        #f)
       (else (eq? a1 a2)))))
 
-
+;; return total count of times atom 'a' occurs
 (define occur
   (lambda (a lat)
     (cond
@@ -367,3 +369,18 @@
 (check-true (one? 1))
 (check-false (one? 2))
 (check-false (one? 0))
+
+(define book-one?
+  (lambda (n)
+    (= n 1)))
+
+
+;; new rempick using one?
+(define new-rempick
+  (lambda (index lat)
+    (cond
+      ((one? index) (cdr lat))
+      (else
+       (cons (car lat)
+             (new-rempick (sub1 index) (cdr lat)))))))
+
