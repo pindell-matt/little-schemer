@@ -221,7 +221,7 @@
     (cond
       ((zero? exponent) 1)
       (else
-       (* base (^ base (- exponent 1)))))))
+       (* base (^ base (sub1 exponent )))))))
 
 
 (check-equal? (^ 1 1) 1)
