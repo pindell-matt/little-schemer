@@ -288,3 +288,18 @@
 (check-equal?
  (no-nums '(5 pears 6 prunes 9 dates))
  '(pears prunes dates))
+
+(define book-no-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+              ((number? (car lat))
+               (no-nums (cdr lat)))
+              (else (cons (car lat)
+                          (book-no-nums
+                           (cdr lat)))))))))
+
+(check-equal?
+ (book-no-nums '(5 pears 6 prunes 9 dates))
+ '(pears prunes dates))
