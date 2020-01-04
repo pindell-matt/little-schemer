@@ -227,3 +227,12 @@
 (check-equal? (^ 1 1) 1)
 (check-equal? (^ 2 3) 8)
 (check-equal? (^ 5 3) 125)
+
+(define my_length
+  (lambda (lat)
+    (cond
+      ((null? lat) 0)
+      (else (+ 1 (my_length (cdr lat)))))))
+
+(check-equal? (my_length '(hotdogs with mustard sauerktraut and pickles)) 6)
+(check-equal? (my_length '(ham and cheese on rye)) 5)
