@@ -359,3 +359,11 @@
 (check-equal?
  (occur 'this '(this is the number 1 test for occur I hope this works))
  2)
+
+(define one?
+  (lambda (n)
+    (zero? (sub1 n))))
+
+(check-true (one? 1))
+(check-false (one? 2))
+(check-false (one? 0))
