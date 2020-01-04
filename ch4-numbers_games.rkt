@@ -216,4 +216,14 @@
      (not (my_> n m))
      (not (my_< n m)))))
 
+(define ^
+  (lambda (base exponent)
+    (cond
+      ((zero? exponent) 1)
+      (else
+       (* base (^ base (- exponent 1)))))))
 
+
+(check-equal? (^ 1 1) 1)
+(check-equal? (^ 2 3) 8)
+(check-equal? (^ 5 3) 125)
