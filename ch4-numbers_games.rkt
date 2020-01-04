@@ -345,3 +345,17 @@
       ((or (number? a1) (number? a2))
        #f)
       (else (eq? a1 a2)))))
+
+
+(define occur
+  (lambda (a lat)
+    (cond
+      ((null? lat) 0)
+      (else
+       (cond
+         ((equan? a (car lat)) (add1 (occur a (cdr lat))))
+         (else (occur a (cdr lat))))))))
+
+(check-equal?
+ (occur 'this '(this is the number 1 test for occur I hope this works))
+ 2)
