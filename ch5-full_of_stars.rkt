@@ -18,3 +18,16 @@
               (my_rember* a (cdr l))))
        (else
         (cons (car l) (my_rember* a (cdr l))))))))
+
+(check-equal?
+ (my_rember*
+  'cup
+  '((coffee) cup ((tea) cup) (and (hick)) cup))
+ '((coffee) ((tea)) (and (hick))))  
+
+(check-equal?
+ (my_rember*
+  'sauce
+  '(((tomato sauce) ((bean) sauce) (and ((flying)) sauce))))
+ '(((tomato) ((bean)) (and ((flying))))))
+  
