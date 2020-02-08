@@ -1,9 +1,7 @@
 #lang scheme
-(require rackunit) ; for checks / assertions
+(require rackunit)
+(require racket/include)
 (include "ch4-numbers_games.rkt")
-
-(define (atom? a)
-  (and (not (null? a)) (not (pair? a))))
 
 ;; rember* - removes all atoms, regardless of nesting
 (define (rember* a l)
@@ -31,19 +29,20 @@
  '(((tomato) ((bean)) (and ((flying))))))
 
 ;; rember* - book version
-;; (define rember*
-;;   (lambda (a l)
-;;     (cond
-;;       ((null? l) (quote ()))
-;;       ((atom? (car l))
-;;        (cond
-;;          ((eq? (car l) a)
-;;           (rember* a (cdr l)))
-;;          (else
-;;           (cons (car l) (rember* a (cdr l))))))
-;;       (else (cons (rember* a (car l))
-;;                   (rember* a (cdr l)))))))
+;;; (define rember*
+;;;   (lambda (a l)
+;;;     (cond
+;;;       ((null? l) (quote ()))
+;;;       ((atom? (car l))
+;;;        (cond
+;;;          ((eq? (car l) a)
+;;;           (rember* a (cdr l)))
+;;;          (else
+;;;           (cons (car l) (rember* a (cdr l))))))
+;;;       (else (cons (rember* a (car l))
+;;;                   (rember* a (cdr l)))))))
 
+;; insertR* - insert new atom to the Right of the old
 (define insertR*
   (lambda (new old l)
     (cond
@@ -100,14 +99,15 @@
 ;; When using cdr  - test termination with null?
 ;; when using sub1 - test termination with zero?
 
+;; occur* - total count of all occurences of atom 'a'
 (define occur*
   (lambda (a l)
     (cond
       ((null? l) 0)
       ((atom? (car l))
-        (cond
-          ((eq? (car l) a) (add1 (occur* a (cdr l))))
-          (else (occur* a (cdr l)))))
+       (cond
+         ((eq? (car l) a) (add1 (occur* a (cdr l))))
+         (else (occur* a (cdr l)))))
       (else
         (+ (occur* a (car l))
            (occur* a (cdr l)))))))
@@ -115,3 +115,36 @@
 (check-equal?
   (occur* 'banana '((banana (split ((((banana ice))) (cream (banana)) sherbert)) (banana) (bread) (banana brandy))))
   5)
+
+;; occur* - book version
+;;; (define occur*
+;;;   (lambda (a l)
+;;;     (cond
+;;;       ((null? l) 0))
+;;;       ((atom? (car l)
+;;;         (cond
+;;;           ((eq? (car l) a)
+;;;             (add1 (occur* a (cdr l)))
+;;;           (else (occur* a (cdr l)))))))
+;;;       (else (+ (occur* a (car l)
+;;;                (occur* a (cdr l)))))))
+
+;; subst* - substitute 'new' for 'old' at any depth
+(define subst*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) old)
+            (cons new (subst* new old (cdr l))))
+          (else (cons (car l) (subst* new old (cdr l))))))
+      (else
+        (cons (subst* new old (car l))
+              (subst* new old (cdr l)))))))
+
+(check-equal?
+  (subst* 'new 'old '(new old (new old) ((new (old)))))
+  '(new new (new new) ((new (new)))))
+
+;; TODO: define insertL*
