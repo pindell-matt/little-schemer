@@ -3,6 +3,9 @@
 (require racket/include)
 (include "ch4-numbers_games.rkt")
 
+(define (atom? x)
+  (and (not (pair? x)) (not (null? x))))
+
 ;; rember* - removes all atoms, regardless of nesting
 (define (rember* a l)
   (cond
@@ -148,3 +151,23 @@
   '(new new (new new) ((new (new)))))
 
 ;; TODO: define insertL*
+
+(define insertL*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) old)
+            (cons new (cons old (insertL* new old (cdr l)))))
+          (else
+            (cons (car l) (insertL* new old (cdr l))))))
+      (else
+        (cons (insertL* new old (car l))
+              (insertL* new old (cdr l)))))))
+
+(check-equal?
+  (insertL* 'left 'of '(of this (of this) ((of this (of this)))))
+  '(left of this (left of this) ((left of this (left of this)))))
+
+;; TODO: member*
