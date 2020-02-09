@@ -150,8 +150,7 @@
   (subst* 'new 'old '(new old (new old) ((new (old)))))
   '(new new (new new) ((new (new)))))
 
-;; TODO: define insertL*
-
+;; insertL* - insert new atom to the left of any instance of old atom at any depth
 (define insertL*
   (lambda (new old l)
     (cond
@@ -170,4 +169,17 @@
   (insertL* 'left 'of '(of this (of this) ((of this (of this)))))
   '(left of this (left of this) ((left of this (left of this)))))
 
-;; TODO: member*
+;; member* - check whether atom is included at any depth of nested s-expression
+(define member*
+  (lambda (a l)
+    (cond
+      ((null? l) #f)
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) a) #t)
+          (else (member* a (cdr l)))))
+      (else
+        (member* a (car l))))))
+
+(check-true
+  (member* 'this '(it (can (find (((((((this)))))))) ?))))
