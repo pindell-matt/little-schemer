@@ -175,11 +175,23 @@
     (cond
       ((null? l) #f)
       ((atom? (car l))
-        (cond
-          ((eq? (car l) a) #t)
-          (else (member* a (cdr l)))))
-      (else
-        (member* a (car l))))))
+        (or (eq? (car l) a)
+          (member* a (cdr l))))
+      (else (or (member* a (car l))
+                (member* a (cdr l)))))))
 
 (check-true
   (member* 'this '(it (can (find (((((((this)))))))) ?))))
+
+;; leftmost - finds the leftmost atom in a non-empty list of s-expressions
+(define leftmost
+  (lambda (l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l)) (car l))
+      (else
+        (leftmost (car l))))))
+
+(check-equal?
+  (leftmost '(((hot) (tuna (and)) cheese)))
+  'hot)
